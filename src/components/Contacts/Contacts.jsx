@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectFilteredContacts } from '../../redux/selectors';
-import { deleteContact } from '../../redux/contactsSlice';
-import { fetchContactsAsync } from '../../redux/operations';
+import { fetchContactsAsync, deleteContactAsync } from '../../redux/operations';
 
 import css from './Contacts.module.scss';
 
@@ -15,8 +14,17 @@ const Contacts = () => {
   }, [dispatch]);
 
   const handleDelete = (id) => {
-    dispatch(deleteContact(id));
+    dispatch(deleteContactAsync(id));
   };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error ocurred: {error}</p>;
+  }
+
   return (
     <ul className={css.list}>
       {items.map((contact) => (

@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { selectContacts } from '../../redux/selectors';
-import { getUniqueId } from '../../helpers/helpers';
 import { addContactAsync } from '../../redux/operations';
 
 import css from './PhoneBook.module.scss';
 
 const PhoneBook = () => {
-  const {items: phones} = useSelector(selectContacts);
+  const {items} = useSelector(selectContacts);
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const dispatch = useDispatch();
@@ -18,7 +17,7 @@ const PhoneBook = () => {
   };
 
   const isContactExist = (name) => {
-    return phones.some(
+    return items.some(
       (contact) => contact.name.toLowerCase() === name.toLowerCase(),
     );
   }
@@ -34,7 +33,7 @@ const PhoneBook = () => {
       return;
     }
   
-    dispatch(addContactAsync({ name, phone: number, id: getUniqueId()}));
+    dispatch(addContactAsync({ name, phone: number}));
     setName('');
     setNumber('');
   };

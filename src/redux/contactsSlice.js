@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchContactsAsync, addContactAsync } from './operations';
+import {
+  fetchContactsAsync,
+  addContactAsync,
+  deleteContactAsync,
+} from './operations';
 
 const contactsSlice = createSlice({
   name: 'contacts',
@@ -8,15 +12,11 @@ const contactsSlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {
-    deleteContact: (state, action) => {
-      return state.filter((contact) => contact.id !== action.payload);
-    },
-  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchContactsAsync.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(fetchContactsAsync.fulfilled, (state, action) => {
         state.loading = false;
@@ -24,10 +24,11 @@ const contactsSlice = createSlice({
       })
       .addCase(fetchContactsAsync.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       .addCase(addContactAsync.pending, (state, _action) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(addContactAsync.fulfilled, (state, action) => {
         state.loading = false;
@@ -35,8 +36,22 @@ const contactsSlice = createSlice({
       })
       .addCase(addContactAsync.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
-      });;
+        state.error = action.payload;
+      })
+      .addCase(deleteContactAsync.pending, (state, _action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteContactAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.items = state.items.filter(
+          (contact) => contact.id !== action.payload
+        );
+      })
+      .addCase(deleteContactAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 
