@@ -1,17 +1,5 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchContacts } from '../services/api';
-
-export const fetchContactsAsync = createAsyncThunk(
-  'contacts/fetchContacts',
-  async (_, thunkAPI) => {
-    try {
-      const contacts = await fetchContacts();
-      return contacts;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
+import { createSlice } from '@reduxjs/toolkit';
+import { fetchContactsAsync } from './operations';
 
 const contactsSlice = createSlice({
   name: 'contacts',
