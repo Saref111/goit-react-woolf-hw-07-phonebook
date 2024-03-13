@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addContact } from '../../redux/contactsSlice';
 import { useSelector } from 'react-redux';
 import { selectContacts } from '../../redux/selectors';
 import { getUniqueId } from '../../helpers/helpers';
+import { addContactAsync } from '../../redux/operations';
 
 import css from './PhoneBook.module.scss';
 
 const PhoneBook = () => {
-  const dispatch = useDispatch();
-  const phones = useSelector(selectContacts);
-  
+  const {items: phones} = useSelector(selectContacts);
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const dispatch = useDispatch();
 
   const isFormEmpty = () => {
     return !name || !number;
@@ -35,7 +34,7 @@ const PhoneBook = () => {
       return;
     }
   
-    dispatch(addContact({ name, phone: number, id: getUniqueId()}));
+    dispatch(addContactAsync({ name, phone: number, id: getUniqueId()}));
     setName('');
     setNumber('');
   };
