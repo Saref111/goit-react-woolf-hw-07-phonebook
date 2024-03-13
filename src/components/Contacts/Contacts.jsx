@@ -1,12 +1,18 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectFilteredContacts } from '../../redux/selectors';
+import {
+  selectError,
+  selectFilteredContacts,
+  selectLoading,
+} from '../../redux/selectors';
 import { fetchContactsAsync, deleteContactAsync } from '../../redux/operations';
 
 import css from './Contacts.module.scss';
 
 const Contacts = () => {
-  const { items, loading, error } = useSelector(selectFilteredContacts);
+  const items  = useSelector(selectFilteredContacts);
+  const loading = useSelector(selectLoading);
+  const error = useSelector(selectError);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -22,7 +28,7 @@ const Contacts = () => {
   }
 
   if (error) {
-    return <p>Error ocurred: {error}</p>;
+    return <p>Error occurred: {error}</p>;
   }
 
   return (

@@ -7,7 +7,7 @@ import { addContactAsync } from '../../redux/operations';
 import css from './PhoneBook.module.scss';
 
 const PhoneBook = () => {
-  const {items} = useSelector(selectContacts);
+  const items = useSelector(selectContacts);
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const dispatch = useDispatch();
